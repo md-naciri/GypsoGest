@@ -1,0 +1,65 @@
+package com.filrouge.gypsogest.service.implementation;
+
+import com.filrouge.gypsogest.domain.Returned;
+import com.filrouge.gypsogest.repository.ReturnedRepo;
+import com.filrouge.gypsogest.service.ReturnedService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class ReturnedServiceImp implements ReturnedService {
+    private final ReturnedRepo returnedRepository;
+    @Override
+    @Transactional
+    public Returned saveReturned(Returned returned) {
+        // Check if a Returned entity with the same paymentCode already
+        Optional<Returned> existingReturned = returnedRepository.findByPaymentCode(returned.getPaymentCode());
+
+        if (existingReturned.isPresent()) {
+            // Entity with the same paymentCode already exists, handle the situation accordingly
+            // You can throw an exception, return null, or handle it as needed.
+            throw new RuntimeException("Returned with paymentCode " + returned.getPaymentCode() + " already exists.");
+        }
+
+        return returnedRepository.save(returned);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Returned> findReturnedById(Long id) {
+        return returnedRepository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Returned> findAllReturneds() {
+        return returnedRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Returned updateReturned(Long id, Returned updatedReturned) {
+        return returnedRepository.findById(id)
+                .map(existingReturned -> {
+                    existingReturned.setDate(updatedReturned.getDate());
+                    existingReturned.setPaymentCode(updatedReturned.getPaymentCode());
+                    return returnedRepository.save(existingReturned);
+                })
+                .orElseThrow(() -> new RuntimeException("Returned not found with id: " + id));
+    }
+
+    @Override
+    @Transactional
+    public void deleteReturned(Long id) {
+        returnedRepository.findById(id)
+                .ifPresentOrElse(
+                        returnedRepository::delete,
+                        () -> { throw new RuntimeException("Returned not found with id: " + id); }
+                );
+    }
+}
