@@ -1,7 +1,5 @@
 package com.filrouge.gypsogest.web.vm;
-
 import com.filrouge.gypsogest.domain.Returned;
-
 import java.time.LocalDateTime;
 
 public record ReturnedResponseVM(

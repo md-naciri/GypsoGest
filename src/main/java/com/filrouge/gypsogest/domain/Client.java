@@ -21,6 +21,7 @@ public class Client {
 
     private String lastName;
 
+    @Column(unique = true)
     private String cin;
 
     private String email;
