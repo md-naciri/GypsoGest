@@ -31,7 +31,7 @@ public class Transaction {
     private String paymentCode;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "sales", "transactions" }, allowSetters = true)
     private Client client;
 }
