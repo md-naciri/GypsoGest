@@ -25,7 +25,7 @@ public class Sale {
     @JsonIgnoreProperties(value = { "sales", "transactions" }, allowSetters = true)
     private Client client;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sale")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sale", cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(value = { "sale" }, allowSetters = true)
     private Set<Item> items = new HashSet<>();
 }
