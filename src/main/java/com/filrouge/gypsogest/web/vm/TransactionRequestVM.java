@@ -1,10 +1,8 @@
 package com.filrouge.gypsogest.web.vm;
-
 import com.filrouge.gypsogest.domain.Client;
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.domain.enumeration.PaymentType;
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 
 public record TransactionRequestVM(
@@ -12,9 +10,12 @@ public record TransactionRequestVM(
         @NotNull Double amount,
         @NotNull PaymentType paymentType,
         @NotNull String paymentCode,
-        @NotNull Client client
+        @NotNull Long clientId
 ) {
     public Transaction toTransaction() {
+        Client client = Client.builder()
+                .id(clientId)
+                .build();
         return Transaction.builder()
                 .date(date)
                 .amount(amount)

@@ -1,5 +1,4 @@
 package com.filrouge.gypsogest.service.implementation;
-
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.exception.CustomException;
 import com.filrouge.gypsogest.repository.TransactionRepo;
@@ -7,7 +6,6 @@ import com.filrouge.gypsogest.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
