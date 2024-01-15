@@ -15,7 +15,7 @@ spring:
       lifecycle-management: start_and_stop
 
   datasource:
-    url: jdbc:mysql://localhost:3306/gypsogest?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/gypsogest
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver

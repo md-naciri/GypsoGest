@@ -1,4 +1,4 @@
-package com.epshiro.gamehive.domain;
+package com.filrouge.gypsogest.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
