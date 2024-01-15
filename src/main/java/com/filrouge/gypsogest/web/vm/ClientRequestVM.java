@@ -2,7 +2,6 @@ package com.filrouge.gypsogest.web.vm;
 
 import com.filrouge.gypsogest.domain.Client;
 import jakarta.validation.constraints.NotBlank;
-import java.util.HashSet;
 
 public record ClientRequestVM(
         @NotBlank(message = "First name cannot be blank")
