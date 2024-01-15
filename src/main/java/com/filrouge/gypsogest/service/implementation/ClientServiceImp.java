@@ -1,36 +1,64 @@
 package com.filrouge.gypsogest.service.implementation;
 
 import com.filrouge.gypsogest.domain.Client;
+import com.filrouge.gypsogest.repository.ClientRepo;
 import com.filrouge.gypsogest.service.ClientService;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ClientServiceImp implements ClientService {
+    private final ClientRepo clientRepository;
     @Override
+    @Transactional
     public Client saveClient(Client client) {
-        return null;
+        // Check if client with the same CIN already exists
+        Optional<Client> existingClient = clientRepository.findByCIN(client.getCIN());
+        if (existingClient.isPresent()) {
+            throw new RuntimeException("Client with CIN " + client.getCIN() + " already exists."); // Custom exception handling can be implemented
+        }
+        // save a client
+        return clientRepository.save(client);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Client> findClientById(Long id) {
-        return Optional.empty();
+        return clientRepository.findById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Client> findAllClients() {
-        return null;
+        return clientRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Client updateClient(Long id, Client updatedClient) {
-        return null;
+        return clientRepository.findById(id)
+                .map(client -> {
+                    client.setFirstName(updatedClient.getFirstName());
+                    client.setLastName(updatedClient.getLastName());
+                    client.setEmail(updatedClient.getEmail());
+                    return clientRepository.save(client);
+                })
+                .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
     }
 
     @Override
+    @Transactional
     public void deleteClient(Long id) {
-
+        clientRepository.findById(id)
+                .ifPresentOrElse(
+                        clientRepository::delete,
+                        () -> { throw new RuntimeException("Client not found with id: " + id); } // Custom exception handling can be implemented
+                );
     }
 }
