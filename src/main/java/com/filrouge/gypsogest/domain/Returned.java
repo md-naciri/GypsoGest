@@ -15,9 +15,7 @@ public class Returned {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private LocalDateTime date;
 
-    @NotNull
     private String paymentCode;
 }
