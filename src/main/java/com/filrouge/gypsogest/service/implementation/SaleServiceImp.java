@@ -2,6 +2,7 @@ package com.filrouge.gypsogest.service.implementation;
 
 import com.filrouge.gypsogest.domain.Client;
 import com.filrouge.gypsogest.domain.Sale;
+import com.filrouge.gypsogest.exception.CustomException;
 import com.filrouge.gypsogest.repository.SaleRepo;
 import com.filrouge.gypsogest.service.ClientService;
 import com.filrouge.gypsogest.service.SaleService;
@@ -22,7 +23,7 @@ public class SaleServiceImp implements SaleService {
     public Sale createSale(Sale sale) {
         // Ensure that the client exists
         Client client = clientService.findClientById(sale.getClient().getId())
-                .orElseThrow(() -> new RuntimeException("Client not found with id: " + sale.getClient().getId()));
+                .orElseThrow(() -> new CustomException("Client not found with id: " + sale.getClient().getId()));
         sale.setClient(client);
         return saleRepository.save(sale);
     }
@@ -43,11 +44,11 @@ public class SaleServiceImp implements SaleService {
     @Transactional
     public Sale updateSale(Long id, Sale updatedSale) {
         Sale existingSale = saleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sale not found with id: " + id));
+                .orElseThrow(() -> new CustomException("Sale not found with id: " + id));
 
         // Ensure that the client exists
         Client client = clientService.findClientById(updatedSale.getClient().getId())
-                .orElseThrow(() -> new RuntimeException("Client not found with id: " + updatedSale.getClient().getId()));
+                .orElseThrow(() -> new CustomException("Client not found with id: " + updatedSale.getClient().getId()));
 
         existingSale.setDate(updatedSale.getDate());
         existingSale.setClient(client);

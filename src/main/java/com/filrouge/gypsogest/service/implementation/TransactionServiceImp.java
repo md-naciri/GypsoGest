@@ -1,6 +1,7 @@
 package com.filrouge.gypsogest.service.implementation;
 
 import com.filrouge.gypsogest.domain.Transaction;
+import com.filrouge.gypsogest.exception.CustomException;
 import com.filrouge.gypsogest.repository.TransactionRepo;
 import com.filrouge.gypsogest.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class TransactionServiceImp implements TransactionService {
         if (existingTransaction.isPresent()) {
             // Entity with the same paymentCode already exists, handle the situation accordingly
             // You can throw an exception, return null, or handle it as needed.
-            throw new RuntimeException("Transaction with paymentCode " + transaction.getPaymentCode() + " already exists.");
+            throw new CustomException("Transaction with paymentCode " + transaction.getPaymentCode() + " already exists.");
         }
 
         return transactionRepository.save(transaction);
@@ -53,7 +54,7 @@ public class TransactionServiceImp implements TransactionService {
                     existingTransaction.setClient(updatedTransaction.getClient());
                     return transactionRepository.save(existingTransaction);
                 })
-                .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + id));
+                .orElseThrow(() -> new CustomException("Transaction not found with id: " + id));
     }
 
     @Override
@@ -62,7 +63,7 @@ public class TransactionServiceImp implements TransactionService {
         transactionRepository.findById(id)
                 .ifPresentOrElse(
                         transactionRepository::delete,
-                        () -> { throw new RuntimeException("Transaction not found with id: " + id); }
+                        () -> { throw new CustomException("Transaction not found with id: " + id); }
                 );
     }
 }

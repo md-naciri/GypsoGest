@@ -1,6 +1,7 @@
 package com.filrouge.gypsogest.service.implementation;
 
 import com.filrouge.gypsogest.domain.Returned;
+import com.filrouge.gypsogest.exception.CustomException;
 import com.filrouge.gypsogest.repository.ReturnedRepo;
 import com.filrouge.gypsogest.service.ReturnedService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class ReturnedServiceImp implements ReturnedService {
         if (existingReturned.isPresent()) {
             // Entity with the same paymentCode already exists, handle the situation accordingly
             // You can throw an exception, return null, or handle it as needed.
-            throw new RuntimeException("Returned with paymentCode " + returned.getPaymentCode() + " already exists.");
+            throw new CustomException("Returned with paymentCode " + returned.getPaymentCode() + " already exists.");
         }
 
         return returnedRepository.save(returned);
@@ -50,7 +51,7 @@ public class ReturnedServiceImp implements ReturnedService {
                     existingReturned.setPaymentCode(updatedReturned.getPaymentCode());
                     return returnedRepository.save(existingReturned);
                 })
-                .orElseThrow(() -> new RuntimeException("Returned not found with id: " + id));
+                .orElseThrow(() -> new CustomException("Returned not found with id: " + id));
     }
 
     @Override
@@ -59,7 +60,7 @@ public class ReturnedServiceImp implements ReturnedService {
         returnedRepository.findById(id)
                 .ifPresentOrElse(
                         returnedRepository::delete,
-                        () -> { throw new RuntimeException("Returned not found with id: " + id); }
+                        () -> { throw new CustomException("Returned not found with id: " + id); }
                 );
     }
 }

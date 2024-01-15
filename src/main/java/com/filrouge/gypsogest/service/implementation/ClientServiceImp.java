@@ -1,6 +1,7 @@
 package com.filrouge.gypsogest.service.implementation;
 
 import com.filrouge.gypsogest.domain.Client;
+import com.filrouge.gypsogest.exception.CustomException;
 import com.filrouge.gypsogest.repository.ClientRepo;
 import com.filrouge.gypsogest.service.ClientService;
 
@@ -21,7 +22,7 @@ public class ClientServiceImp implements ClientService {
         // Check if client with the same CIN already exists
         Optional<Client> existingClient = clientRepository.findByCin(client.getCin());
         if (existingClient.isPresent()) {
-            throw new RuntimeException("Client with CIN " + client.getCin() + " already exists."); // Custom exception handling can be implemented
+            throw new CustomException("Client with CIN " + client.getCin() + " already exists.");
         }
         // save a client
         return clientRepository.save(client);
@@ -49,7 +50,7 @@ public class ClientServiceImp implements ClientService {
                     client.setEmail(updatedClient.getEmail());
                     return clientRepository.save(client);
                 })
-                .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
+                .orElseThrow(() -> new CustomException("Client not found with id: " + id));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ClientServiceImp implements ClientService {
         clientRepository.findById(id)
                 .ifPresentOrElse(
                         clientRepository::delete,
-                        () -> { throw new RuntimeException("Client not found with id: " + id); } // Custom exception handling can be implemented
+                        () -> { throw new CustomException("Client not found with id: " + id); }
                 );
     }
 }
