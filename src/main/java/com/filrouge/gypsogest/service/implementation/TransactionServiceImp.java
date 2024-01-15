@@ -1,7 +1,9 @@
 package com.filrouge.gypsogest.service.implementation;
+import com.filrouge.gypsogest.domain.Client;
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.exception.CustomException;
 import com.filrouge.gypsogest.repository.TransactionRepo;
+import com.filrouge.gypsogest.service.ClientService;
 import com.filrouge.gypsogest.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TransactionServiceImp implements TransactionService {
     private final TransactionRepo transactionRepository;
+    private final ClientService clientService;
     @Override
     @Transactional
     public Transaction saveTransaction(Transaction transaction) {
@@ -20,10 +23,11 @@ public class TransactionServiceImp implements TransactionService {
         Optional<Transaction> existingTransaction = transactionRepository.findByPaymentCode(transaction.getPaymentCode());
 
         if (existingTransaction.isPresent()) {
-            // Entity with the same paymentCode already exists, handle the situation accordingly
-            // You can throw an exception, return null, or handle it as needed.
             throw new CustomException("Transaction with paymentCode " + transaction.getPaymentCode() + " already exists.");
         }
+        Client client = clientService.findClientById(transaction.getClient().getId())
+                .orElseThrow(() -> new CustomException("Client not found with id: " + transaction.getClient().getId()));
+        transaction.setClient(client);
 
         return transactionRepository.save(transaction);
     }
@@ -43,16 +47,21 @@ public class TransactionServiceImp implements TransactionService {
     @Override
     @Transactional
     public Transaction updateTransaction(Long id, Transaction updatedTransaction) {
-        return transactionRepository.findById(id)
-                .map(existingTransaction -> {
-                    existingTransaction.setDate(updatedTransaction.getDate());
-                    existingTransaction.setAmount(updatedTransaction.getAmount());
-                    existingTransaction.setPaymentType(updatedTransaction.getPaymentType());
-                    existingTransaction.setPaymentCode(updatedTransaction.getPaymentCode());
-                    existingTransaction.setClient(updatedTransaction.getClient());
-                    return transactionRepository.save(existingTransaction);
-                })
+        Transaction existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new CustomException("Transaction not found with id: " + id));
+        // Retrieve the client by its ID
+        Client client = clientService.findClientById(updatedTransaction.getClient().getId())
+                .orElseThrow(() -> new CustomException("Client not found with id: " + updatedTransaction.getClient().getId()));
+
+        existingTransaction = Transaction.builder()
+                .id(existingTransaction.getId())
+                .date(updatedTransaction.getDate())
+                .amount(updatedTransaction.getAmount())
+                .paymentType(updatedTransaction.getPaymentType())
+                .paymentCode(updatedTransaction.getPaymentCode())
+                .client(client)
+                .build();
+        return transactionRepository.save(existingTransaction);
     }
 
     @Override

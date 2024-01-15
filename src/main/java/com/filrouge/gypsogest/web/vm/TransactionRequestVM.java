@@ -13,15 +13,12 @@ public record TransactionRequestVM(
         @NotNull Long clientId
 ) {
     public Transaction toTransaction() {
-        Client client = Client.builder()
-                .id(clientId)
-                .build();
         return Transaction.builder()
                 .date(date)
                 .amount(amount)
                 .paymentType(paymentType)
                 .paymentCode(paymentCode)
-                .client(client)
+                .client(Client.builder().id(clientId).build())
                 .build();
     }
 }
