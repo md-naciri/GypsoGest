@@ -1,0 +1,15 @@
+com\filrouge\gypsogest\domain\Returned$ReturnedBuilder.class
+com\filrouge\gypsogest\domain\Client.class
+com\filrouge\gypsogest\domain\Sale$SaleBuilder.class
+com\filrouge\gypsogest\domain\enumeration\GypseType.class
+com\filrouge\gypsogest\domain\Transaction$TransactionBuilder.class
+com\filrouge\gypsogest\domain\AppUser$AppUserBuilder.class
+com\filrouge\gypsogest\domain\Client$ClientBuilder.class
+com\filrouge\gypsogest\domain\AppUser.class
+com\filrouge\gypsogest\domain\Returned.class
+com\filrouge\gypsogest\GypsoGestApplication.class
+com\filrouge\gypsogest\domain\Item$ItemBuilder.class
+com\filrouge\gypsogest\domain\Item.class
+com\filrouge\gypsogest\domain\Sale.class
+com\filrouge\gypsogest\domain\Transaction.class
+com\filrouge\gypsogest\domain\enumeration\PaymentType.class

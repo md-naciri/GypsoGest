@@ -2,7 +2,6 @@ package com.filrouge.gypsogest.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,13 +17,12 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String firstName;
 
-    @NotBlank
     private String lastName;
 
-    @NotBlank
+    private String CIN;
+
     private String email;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
