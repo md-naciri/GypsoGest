@@ -21,7 +21,7 @@ public class Client {
 
     private String lastName;
 
-    private String CIN;
+    private String cin;
 
     private String email;
 

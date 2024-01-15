@@ -12,13 +12,17 @@ public record ClientRequestVM(
         String lastName,
 
         @NotBlank(message = "Email cannot be blank")
-        String email
+        String email,
+
+        @NotBlank(message = "CIN cannot be blank")
+        String cin
 ) {
     public Client toClient(){
         return Client.builder()
                 .firstName(firstName)
                 .lastName(lastName)
                 .email(email)
+                .cin(cin)
                 //.sales(new HashSet<>())
                 //.transactions(new HashSet<>())
                 .build();

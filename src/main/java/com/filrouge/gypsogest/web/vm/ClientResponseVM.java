@@ -4,9 +4,10 @@ import java.util.Set;
 
 public record ClientResponseVM(
         Long id,
-        String firstName,
-        String lastName,
-        String email
+        String FirstName,
+        String LastName,
+        String Email,
+        String CIN
         //Set<?> sales, // Replace with the appropriate type
         //Set<?> transactions // Replace with the appropriate type
 ) {
@@ -15,7 +16,8 @@ public record ClientResponseVM(
                 client.getId(),
                 client.getFirstName(),
                 client.getLastName(),
-                client.getEmail()
+                client.getEmail(),
+                client.getCin()
                 //client.getSales(), // Ensure this is converted to the appropriate VM type if needed
                 //client.getTransactions() // Ensure this is converted to the appropriate VM type if needed
         );

@@ -19,9 +19,9 @@ public class ClientServiceImp implements ClientService {
     @Transactional
     public Client saveClient(Client client) {
         // Check if client with the same CIN already exists
-        Optional<Client> existingClient = clientRepository.findByCIN(client.getCIN());
+        Optional<Client> existingClient = clientRepository.findByCin(client.getCin());
         if (existingClient.isPresent()) {
-            throw new RuntimeException("Client with CIN " + client.getCIN() + " already exists."); // Custom exception handling can be implemented
+            throw new RuntimeException("Client with CIN " + client.getCin() + " already exists."); // Custom exception handling can be implemented
         }
         // save a client
         return clientRepository.save(client);
