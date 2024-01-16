@@ -2,7 +2,6 @@ package com.filrouge.gypsogest.web.vm;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.filrouge.gypsogest.domain.Sale;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;

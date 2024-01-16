@@ -42,6 +42,16 @@ public class SaleServiceImp implements SaleService {
 
     @Override
     @Transactional(readOnly = true)
+    public Set<Sale> findSalesByClientId(Long id) {
+        // Ensure that the client exists
+        clientService.findClientById(id)
+                .orElseThrow(() -> new CustomException("Client not found with id: " + id));
+        return saleRepository.findByClient_Id(id);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Sale> findAllSales() {
         return saleRepository.findAll();
     }
