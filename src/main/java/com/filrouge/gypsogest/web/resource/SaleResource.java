@@ -24,14 +24,14 @@ public class SaleResource {
     public ResponseEntity<?> createSale(@Valid @RequestBody SaleRequestVM saleRequest) {
         Sale sale = saleRequest.toSale();
         sale = saleService.createSale(sale);
-        SaleResponseVM saleResponse = SaleResponseVM.fromSale(sale);
+        SaleResponseVM saleResponse = SaleResponseVM.fromSale(sale, true);
         return ResponseHandler.created(saleResponse, "Sale created successfully.");
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getSaleById(@PathVariable Long id) {
         return saleService.findSaleById(id)
-                .map(sale -> ResponseHandler.ok(SaleResponseVM.fromSale(sale), "Sale found."))
+                .map(sale -> ResponseHandler.ok(SaleResponseVM.fromSale(sale, true), "Sale found."))
                 .orElse(ResponseHandler.notFound("Sale not found."));
     }
 
@@ -39,7 +39,7 @@ public class SaleResource {
     public ResponseEntity<?> getAllSales() {
         List<Sale> sales = saleService.findAllSales();
         List<SaleResponseVM> saleResponses = sales.stream()
-                .map(SaleResponseVM::fromSale)
+                .map(sale -> SaleResponseVM.fromSale(sale, true))
                 .collect(Collectors.toList());
         return ResponseHandler.ok(saleResponses, "All sales retrieved successfully.");
     }
@@ -48,7 +48,7 @@ public class SaleResource {
     public ResponseEntity<?> updateSale(@PathVariable Long id, @Valid @RequestBody SaleRequestVM saleRequest) {
         Sale updatedSale = saleRequest.toSale();
         Sale sale = saleService.updateSale(id, updatedSale);
-        SaleResponseVM saleResponse = SaleResponseVM.fromSale(sale);
+        SaleResponseVM saleResponse = SaleResponseVM.fromSale(sale, true);
         return ResponseHandler.ok(saleResponse, "Sale updated successfully.");
     }
 

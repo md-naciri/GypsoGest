@@ -1,12 +1,10 @@
 package com.filrouge.gypsogest.service;
 
-import com.filrouge.gypsogest.web.vm.CreditResponseVM;
-
 import java.util.List;
 
 public interface AccountingService {
     // Calculate credit for a single client
-    List<CreditResponseVM> calculateCreditForClient(Long clientId);
+    double calculateCreditForClient(Long clientId);
 
     // Calculate debit for a single client
     double calculateDebitForClient(Long clientId);

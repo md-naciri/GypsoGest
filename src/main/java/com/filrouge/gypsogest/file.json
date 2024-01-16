@@ -1,0 +1,55 @@
+{
+  "statusCode": 200,
+  "timeStamp": "16 January 2024, 15:10:13",
+  "message": "Client credit retrieved successfully.",
+  "data": {
+    "client": {
+      "id": 2,
+      "FirstName": "John",
+      "LastName": "Doe",
+      "Email": "john.doe@example.com",
+      "CIN": "0987654321"
+    },
+    "sales": [
+      {
+        "id": 6,
+        "date": "2022-12-31T12:00:00",
+        "items": [
+          {
+            "id": 14,
+            "quantity": 3.0,
+            "unitPrice": 8.0,
+            "gypseType": "Moulage"
+          },
+          {
+            "id": 15,
+            "quantity": 2.5,
+            "unitPrice": 10.0,
+            "gypseType": "Staff"
+          }
+        ],
+        "total": 49.0
+      },
+      {
+        "id": 7,
+        "date": "2022-12-31T12:00:00",
+        "items": [
+          {
+            "id": 16,
+            "quantity": 7.5,
+            "unitPrice": 17.0,
+            "gypseType": "Staff"
+          },
+          {
+            "id": 17,
+            "quantity": 8.0,
+            "unitPrice": 8.0,
+            "gypseType": "Moulage"
+          }
+        ],
+        "total": 191.5
+      }
+    ] ,
+    "credit": 240.5
+  }
+}

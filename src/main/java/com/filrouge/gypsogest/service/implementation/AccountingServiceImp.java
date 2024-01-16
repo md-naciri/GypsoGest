@@ -1,11 +1,15 @@
 package com.filrouge.gypsogest.service.implementation;
+import com.filrouge.gypsogest.domain.Item;
 import com.filrouge.gypsogest.domain.Sale;
 import com.filrouge.gypsogest.service.AccountingService;
 import com.filrouge.gypsogest.service.SaleService;
 import com.filrouge.gypsogest.service.TransactionService;
-import com.filrouge.gypsogest.web.vm.CreditResponseVM;
+import com.filrouge.gypsogest.web.vm.ClientResponseVM;
+import com.filrouge.gypsogest.web.vm.ItemResponseVM;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,14 +19,24 @@ import java.util.stream.Collectors;
 public class AccountingServiceImp implements AccountingService {
     private final SaleService saleService;
     private final TransactionService transactionService;
-    @Override
-    public List<CreditResponseVM> calculateCreditForClient(Long clientId) {
-        // Fetch sales for the client
-        Set<Sale> sales = saleService.findSalesByClientId(clientId);
 
-        // Convert each sale to CreditResponseVM using the static factory method
-        return sales.stream().map(CreditResponseVM::fromSale).collect(Collectors.toList());
+    @Override
+    @Transactional(readOnly = true)
+    public double calculateCreditForClient(Long clientId) {
+        Set<Sale> clientSales = saleService.findSalesByClientId(clientId);
+        double totalCredit = 0.0;
+
+        for (Sale sale : clientSales) {
+            for (Item item : sale.getItems()) {
+                totalCredit += item.getQuantity() * item.getUnitPrice();
+            }
+        }
+
+        return totalCredit;
     }
+
+
+
 
     @Override
     public double calculateDebitForClient(Long clientId) {
