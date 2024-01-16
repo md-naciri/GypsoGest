@@ -23,12 +23,8 @@ public record SaleRequestVM(
     public Sale toSale() {
         Sale sale = Sale.builder()
                 .date(date)
+                .client(Client.builder().id(clientId).build())
                 .build();
-
-        // Set the client using the clientId
-        Client client = new Client();
-        client.setId(clientId);
-        sale.setClient(client);
 
         Set<Item> saleItems = items.stream()
                 .map(itemRequestVM -> itemRequestVM.toItem(sale))

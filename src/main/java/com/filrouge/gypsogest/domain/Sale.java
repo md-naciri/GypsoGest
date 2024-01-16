@@ -18,7 +18,6 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
