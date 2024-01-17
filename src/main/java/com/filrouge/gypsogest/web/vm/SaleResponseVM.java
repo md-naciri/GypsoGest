@@ -13,11 +13,11 @@ public record SaleResponseVM(
         @JsonIgnoreProperties(value = { "sale" }, allowSetters = true)
         Set<ItemResponseVM> items
 ) {
-    public static SaleResponseVM fromSale(Sale sale, boolean includeClient){
+    public static SaleResponseVM fromSale(Sale sale){
             return new SaleResponseVM(
                 sale.getId(),
                 sale.getDate(),
-                includeClient ? ClientResponseVM.fromClient(sale.getClient()) : null,
+                ClientResponseVM.fromClient(sale.getClient()),
                 sale.getItems().stream().map(ItemResponseVM::fromItem).collect(Collectors.toSet())
         );
     }
