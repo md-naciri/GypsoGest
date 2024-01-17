@@ -4,15 +4,12 @@ import com.filrouge.gypsogest.domain.Sale;
 import com.filrouge.gypsogest.service.AccountingService;
 import com.filrouge.gypsogest.service.SaleService;
 import com.filrouge.gypsogest.service.TransactionService;
-import com.filrouge.gypsogest.web.vm.ClientResponseVM;
-import com.filrouge.gypsogest.web.vm.ItemResponseVM;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
