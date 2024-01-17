@@ -1,6 +1,7 @@
 package com.filrouge.gypsogest.service.implementation;
 import com.filrouge.gypsogest.domain.Item;
 import com.filrouge.gypsogest.domain.Sale;
+import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.service.AccountingService;
 import com.filrouge.gypsogest.service.SaleService;
 import com.filrouge.gypsogest.service.TransactionService;
@@ -32,12 +33,17 @@ public class AccountingServiceImp implements AccountingService {
         return totalCredit;
     }
 
-
-
-
     @Override
+    @Transactional(readOnly = true)
     public double calculateDebitForClient(Long clientId) {
-        return 0;
+        Set<Transaction> clientTransactions = transactionRepository.findByClient_Id(clientId);
+        double totalDebit = 0.0;
+
+        for (Transaction transaction : clientTransactions) {
+            totalDebit += transaction.getAmount();
+        }
+
+        return totalDebit;
     }
 
     @Override
