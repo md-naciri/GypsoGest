@@ -42,7 +42,6 @@ public class AccountingServiceImp implements AccountingService {
         for (Transaction transaction : clientTransactions) {
             totalDebit += transaction.getAmount();
         }
-
         return totalDebit;
     }
 
