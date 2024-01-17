@@ -36,7 +36,7 @@ public class AccountingServiceImp implements AccountingService {
     @Override
     @Transactional(readOnly = true)
     public double calculateDebitForClient(Long clientId) {
-        Set<Transaction> clientTransactions = transactionRepository.findByClient_Id(clientId);
+        Set<Transaction> clientTransactions = transactionService.findTransactionsByClientId(clientId);
         double totalDebit = 0.0;
 
         for (Transaction transaction : clientTransactions) {
