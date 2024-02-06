@@ -1,4 +1,5 @@
 package com.filrouge.gypsogest.domain;
+import com.filrouge.gypsogest.domain.enumeration.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,9 +20,10 @@ public class AppUser implements UserDetails {
     private Long id;
     private String username;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private boolean activated = false;
 
     @Override
