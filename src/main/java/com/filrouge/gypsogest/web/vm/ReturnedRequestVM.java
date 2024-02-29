@@ -11,7 +11,7 @@ public record ReturnedRequestVM(
     public Returned toReturned() {
         return Returned.builder()
                 .date(date)
-                .ClientId(clientId)
+                .clientId(clientId)
                 .paymentCode(paymentCode)
                 .build();
     }
