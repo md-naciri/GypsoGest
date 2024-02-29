@@ -1,6 +1,5 @@
 package com.filrouge.gypsogest.web.vm;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.filrouge.gypsogest.domain.Client;
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.domain.enumeration.PaymentType;

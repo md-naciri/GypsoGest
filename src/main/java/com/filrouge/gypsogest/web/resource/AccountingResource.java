@@ -65,4 +65,6 @@ public class AccountingResource {
             return ResponseHandler.notFound("Client not found with id: " + clientId);
         }
     }
+
+
 }
