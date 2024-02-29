@@ -50,6 +50,7 @@ public class ReturnedServiceImp implements ReturnedService {
                 .map(existingReturned -> {
                     existingReturned.setDate(updatedReturned.getDate());
                     existingReturned.setPaymentCode(updatedReturned.getPaymentCode());
+                    existingReturned.setClientId(updatedReturned.getClientId());
                     return returnedRepository.save(existingReturned);
                 })
                 .orElseThrow(() -> new CustomException("Returned not found with id: " + id));
