@@ -12,6 +12,7 @@ import com.filrouge.gypsogest.web.vm.ClientResponseVM;
 
 import com.filrouge.gypsogest.web.vm.CreditResponseVM;
 import com.filrouge.gypsogest.web.vm.DebitResponseVM;
+import com.filrouge.gypsogest.web.vm.TotalResponseVM;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,5 +67,19 @@ public class AccountingResource {
         }
     }
 
+    @GetMapping("/client-total/{clientId}")
+    public ResponseEntity<?> getClientTotal(@PathVariable Long clientId) {
+        Optional<Client> clientOptional = clientService.findClientById(clientId);
+
+        if (clientOptional.isPresent()) {
+            Client client = clientOptional.get();
+            double total = accountingService.calculateTotalForClient(clientId);
+
+            TotalResponseVM totalResponse = TotalResponseVM.fromClient(client, total);
+            return ResponseHandler.ok(totalResponse, "Client total calculated successfully.");
+        } else {
+            return ResponseHandler.notFound("Client not found with id: " + clientId);
+        }
+    }
 
 }
