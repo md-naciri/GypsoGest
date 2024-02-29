@@ -19,12 +19,13 @@ public class ReturnedServiceImp implements ReturnedService {
     @Transactional
     public Returned saveReturned(Returned returned) {
         // Check if a Returned entity with the same paymentCode already
-        Optional<Returned> existingReturned = returnedRepository.findByPaymentCode(returned.getPaymentCode());
+        //Optional<Returned> existingReturned = returnedRepository.findByPaymentCode(returned.getPaymentCode());
+        Optional<Returned> existingReturned = returnedRepository.findByPaymentCodeAndClientId(returned.getPaymentCode(), returned.getClientId());
 
         if (existingReturned.isPresent()) {
             // Entity with the same paymentCode already exists, handle the situation accordingly
             // You can throw an exception, return null, or handle it as needed.
-            throw new CustomException("Returned with paymentCode " + returned.getPaymentCode() + " already exists.");
+            throw new CustomException("Returned with paymentCode " + returned.getPaymentCode() + " and client id " + returned.getClientId() + " already exists.");
         }
 
         return returnedRepository.save(returned);
