@@ -47,7 +47,10 @@ public class AccountingServiceImp implements AccountingService {
 
     @Override
     public double calculateTotalForClient(Long clientId) {
-        return 0;
+        double totalCredit = calculateCreditForClient(clientId);
+        double totalDebit = calculateDebitForClient(clientId);
+
+        return totalCredit - totalDebit;
     }
 
     @Override

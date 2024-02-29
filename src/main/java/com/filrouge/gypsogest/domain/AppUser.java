@@ -24,7 +24,7 @@ public class AppUser implements UserDetails {
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private boolean activated = false;
+//    private boolean activated = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

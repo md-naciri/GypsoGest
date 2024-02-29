@@ -19,3 +19,6 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+token:
+  signing:
+    key: "413F4428472B4B6250655368566D5970337336763979244226452948404D6351"

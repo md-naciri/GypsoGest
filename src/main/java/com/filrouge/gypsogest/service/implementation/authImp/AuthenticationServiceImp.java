@@ -1,4 +1,4 @@
-package com.filrouge.gypsogest.service.implementation;
+package com.filrouge.gypsogest.service.implementation.authImp;
 
 import com.filrouge.gypsogest.domain.AppUser;
 import com.filrouge.gypsogest.domain.enumeration.Role;
