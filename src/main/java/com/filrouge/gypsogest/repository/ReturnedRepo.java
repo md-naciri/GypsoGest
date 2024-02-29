@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ReturnedRepo extends JpaRepository<Returned, Long> {
     Optional <Returned> findByPaymentCode(String paymentCode);
+    Optional <Returned> findByPaymentCodeAndClientId(String paymentCode, Long clientID);
 }
