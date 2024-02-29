@@ -16,5 +16,7 @@ public class Returned {
 
     private LocalDateTime date;
 
+    private Long ClientId;
+
     private String paymentCode;
 }
