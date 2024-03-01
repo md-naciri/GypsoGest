@@ -1,8 +1,10 @@
 package com.filrouge.gypsogest.service.implementation;
 
 import com.filrouge.gypsogest.domain.Returned;
+import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.exception.CustomException;
 import com.filrouge.gypsogest.repository.ReturnedRepo;
+import com.filrouge.gypsogest.service.ClientService;
 import com.filrouge.gypsogest.service.ReturnedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class ReturnedServiceImp implements ReturnedService {
     private final ReturnedRepo returnedRepository;
+    private final ClientService clientService;
     @Override
     @Transactional
     public Returned saveReturned(Returned returned) {
@@ -41,6 +45,7 @@ public class ReturnedServiceImp implements ReturnedService {
     public Optional<Returned> findReturnedByPaymentCodeAndClientId(String paymentCode, Long clientId) {
         return returnedRepository.findByPaymentCodeAndClientId(paymentCode, clientId);
     }
+
 
     @Override
     @Transactional(readOnly = true)
