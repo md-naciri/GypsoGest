@@ -1,13 +1,11 @@
 package com.filrouge.gypsogest.web.resource;
 
 import com.filrouge.gypsogest.domain.Client;
+import com.filrouge.gypsogest.domain.Returned;
 import com.filrouge.gypsogest.domain.Sale;
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.exception.ResponseHandler;
-import com.filrouge.gypsogest.service.AccountingService;
-import com.filrouge.gypsogest.service.ClientService;
-import com.filrouge.gypsogest.service.SaleService;
-import com.filrouge.gypsogest.service.TransactionService;
+import com.filrouge.gypsogest.service.*;
 import com.filrouge.gypsogest.web.vm.ClientResponseVM;
 
 import com.filrouge.gypsogest.web.vm.CreditResponseVM;
@@ -34,6 +32,7 @@ public class AccountingResource {
     private final ClientService clientService;
     private final SaleService saleService;
     private final TransactionService transactionService;
+    private final ReturnedService returnedService;
 
     @GetMapping("/client-credit/{clientId}")
     public ResponseEntity<?> getClientCredit(@PathVariable Long clientId) {
@@ -58,9 +57,10 @@ public class AccountingResource {
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
             Set<Transaction> clientTransactions = transactionService.findTransactionsByClientId(clientId);
+            Set<Returned> clientReturneds = returnedService.findReturnedsByClientId(clientId);
             Double debit = accountingService.calculateDebitForClient(clientId);
 
-            DebitResponseVM debitResponse = DebitResponseVM.fromClientAndTransactions(client, new ArrayList<>(clientTransactions), debit);
+            DebitResponseVM debitResponse = DebitResponseVM.fromClientAndTransactions(client, new ArrayList<>(clientTransactions), new ArrayList<>(clientReturneds), debit);
             return ResponseHandler.ok(debitResponse, "Client debit retrieved successfully.");
         } else {
             return ResponseHandler.notFound("Client not found with id: " + clientId);

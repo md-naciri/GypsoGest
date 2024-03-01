@@ -1,6 +1,7 @@
 package com.filrouge.gypsogest.web.vm;
 
 import com.filrouge.gypsogest.domain.Client;
+import com.filrouge.gypsogest.domain.Returned;
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.domain.enumeration.PaymentType;
 
@@ -11,9 +12,10 @@ import java.util.stream.Collectors;
 public record DebitResponseVM(
         ClientResponseVM client,
         List<TransactionWithoutClientResponseVM> transactions,
+        List<Returned> listOfReturned,
         Double debit
 ) {
-    public static DebitResponseVM fromClientAndTransactions(Client client, List<Transaction> transactions, Double debit) {
+    public static DebitResponseVM fromClientAndTransactions(Client client, List<Transaction> transactions, List<Returned> listOfReturned, Double debit) {
         List<TransactionWithoutClientResponseVM> transactionResponses = transactions.stream()
                 .map(TransactionWithoutClientResponseVM::fromTransaction)
                 .collect(Collectors.toList());
@@ -21,6 +23,7 @@ public record DebitResponseVM(
         return new DebitResponseVM(
                 ClientResponseVM.fromClient(client),
                 transactionResponses,
+                listOfReturned,
                 debit
         );
     }
