@@ -36,12 +36,18 @@ public class ReturnedServiceImp implements ReturnedService {
     public Optional<Returned> findReturnedById(Long id) {
         return returnedRepository.findById(id);
     }
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Returned> findReturnedByPaymentCodeAndClientId(String paymentCode, Long clientId) {
+        return returnedRepository.findByPaymentCodeAndClientId(paymentCode, clientId);
+    }
 
     @Override
     @Transactional(readOnly = true)
     public List<Returned> findAllReturneds() {
         return returnedRepository.findAll();
     }
+
 
     @Override
     @Transactional
