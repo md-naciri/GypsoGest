@@ -1,8 +1,10 @@
 package com.filrouge.gypsogest.service.implementation;
 import com.filrouge.gypsogest.domain.Item;
+import com.filrouge.gypsogest.domain.Returned;
 import com.filrouge.gypsogest.domain.Sale;
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.service.AccountingService;
+import com.filrouge.gypsogest.service.ReturnedService;
 import com.filrouge.gypsogest.service.SaleService;
 import com.filrouge.gypsogest.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -17,6 +20,7 @@ import java.util.Set;
 public class AccountingServiceImp implements AccountingService {
     private final SaleService saleService;
     private final TransactionService transactionService;
+    private final ReturnedService returnedService;
 
     @Override
     @Transactional(readOnly = true)
@@ -41,6 +45,18 @@ public class AccountingServiceImp implements AccountingService {
 
         for (Transaction transaction : clientTransactions) {
             totalDebit += transaction.getAmount();
+        }
+
+        Set<Returned> clientReturneds = returnedService.findReturnedsByClientId(clientId);
+
+        // Iterate over returneds and adjust totalDebit accordingly
+        for (Returned returned : clientReturneds) {
+            for (Transaction transaction : clientTransactions) {
+                if (transaction.getPaymentCode().equals(returned.getPaymentCode())) {
+                    totalDebit -= transaction.getAmount();
+                    break; // Move to the next returned
+                }
+            }
         }
         return totalDebit;
     }
