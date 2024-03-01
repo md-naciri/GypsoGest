@@ -46,6 +46,13 @@ public class ReturnedServiceImp implements ReturnedService {
         return returnedRepository.findByPaymentCodeAndClientId(paymentCode, clientId);
     }
 
+    @Override
+    public Set<Returned> findReturnedsByClientId(Long id) {
+        // Ensure that the client exists
+        clientService.findClientById(id)
+                .orElseThrow(() -> new CustomException("Client not found with id: " + id));
+        return returnedRepository.findByClientId(id);
+    }
 
     @Override
     @Transactional(readOnly = true)
