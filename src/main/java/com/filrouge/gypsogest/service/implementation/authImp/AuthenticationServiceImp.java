@@ -11,6 +11,8 @@ import com.filrouge.gypsogest.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +38,14 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signIn(SignInRequest signInRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
-        var user = userRepo.findByUsername(signInRequest.getUsername()).orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
-        var jwt = jwtService.generateToken(user);
-        return JwtAuthenticationResponse.builder().token(jwt).name(user.getName()).build();
+
+        try{
+            AppUser user = userRepo.findByUsername(signInRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("username not exist "));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
+            var jwt = jwtService.generateToken(user);
+            return JwtAuthenticationResponse.builder().token(jwt).name(user.getName()).build();
+        }catch(AuthenticationException e){
+            throw new IllegalArgumentException("invalid email or password");
+        }
     }
 }
