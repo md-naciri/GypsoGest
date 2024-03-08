@@ -29,7 +29,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
                 .name(signUpRequest.getName())
                 .username(signUpRequest.getUsername())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .role(Role.USER)
+                .role(signUpRequest.getRole())
                 .build();
         userRepo.save(user);
         var token = jwtService.generateToken(user);
