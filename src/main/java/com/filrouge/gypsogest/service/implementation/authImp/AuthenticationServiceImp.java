@@ -23,17 +23,40 @@ public class AuthenticationServiceImp implements AuthenticationService {
     private final UserRepo userRepo;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+//    @Override
+//    public JwtAuthenticationResponse signUp(SignUpRequest signUpRequest) {
+//        var user = AppUser.builder()
+//                .name(signUpRequest.getName())
+//                .username(signUpRequest.getUsername())
+//                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+//                .role(signUpRequest.getRole())
+//                .build();
+//        userRepo.save(user);
+//        var token = jwtService.generateToken(user);
+//        return JwtAuthenticationResponse.builder().token(token).name(signUpRequest.getName()).build();
+//    }
+
     @Override
     public JwtAuthenticationResponse signUp(SignUpRequest signUpRequest) {
-        var user = AppUser.builder()
-                .name(signUpRequest.getName())
-                .username(signUpRequest.getUsername())
-                .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .role(signUpRequest.getRole())
-                .build();
-        userRepo.save(user);
-        var token = jwtService.generateToken(user);
-        return JwtAuthenticationResponse.builder().token(token).name(signUpRequest.getName()).build();
+        userRepo.findByUsername(signUpRequest.getUsername()).ifPresent(user -> {
+            throw new IllegalArgumentException("username already exist");
+        });
+        try{
+            Role role =  Role.valueOf(String.valueOf(signUpRequest.getRole()));
+            var user = AppUser.builder()
+                    .name(signUpRequest.getName())
+                    .username(signUpRequest.getUsername())
+                    .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                    .role(role)
+                    .build();
+            userRepo.save(user);
+            var token = jwtService.generateToken(user);
+            return JwtAuthenticationResponse.builder().token(token).name(signUpRequest.getName()).build();
+        }catch(IllegalArgumentException e){
+            throw new IllegalArgumentException("role not exist");
+        }
+
+
     }
 
     @Override
