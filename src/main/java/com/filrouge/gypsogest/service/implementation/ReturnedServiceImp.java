@@ -1,5 +1,6 @@
 package com.filrouge.gypsogest.service.implementation;
 
+import com.filrouge.gypsogest.domain.Client;
 import com.filrouge.gypsogest.domain.Returned;
 import com.filrouge.gypsogest.domain.Transaction;
 import com.filrouge.gypsogest.exception.CustomException;
@@ -24,6 +25,8 @@ public class ReturnedServiceImp implements ReturnedService {
     public Returned saveReturned(Returned returned) {
         // Check if a Returned entity with the same paymentCode already
         //Optional<Returned> existingReturned = returnedRepository.findByPaymentCode(returned.getPaymentCode());
+        clientService.findClientById(returned.getClientId())
+                .orElseThrow(() -> new CustomException("Client not found with id: " + returned.getClientId()));
         Optional<Returned> existingReturned = returnedRepository.findByPaymentCodeAndClientId(returned.getPaymentCode(), returned.getClientId());
 
         if (existingReturned.isPresent()) {

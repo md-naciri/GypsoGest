@@ -66,7 +66,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
             AppUser user = userRepo.findByUsername(signInRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("username not exist "));
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
             var jwt = jwtService.generateToken(user);
-            return JwtAuthenticationResponse.builder().token(jwt).name(user.getName()).build();
+            return JwtAuthenticationResponse.builder().token(jwt).name(user.getName()).role(user.getRole().toString()).build();
         }catch(AuthenticationException e){
             throw new IllegalArgumentException("invalid email or password");
         }
