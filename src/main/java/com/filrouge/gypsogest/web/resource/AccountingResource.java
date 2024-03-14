@@ -73,9 +73,11 @@ public class AccountingResource {
 
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
+            double credit = accountingService.calculateCreditForClient(clientId);
+            double debit = accountingService.calculateDebitForClient(clientId);
             double total = accountingService.calculateTotalForClient(clientId);
 
-            TotalResponseVM totalResponse = TotalResponseVM.fromClient(client, total);
+            TotalResponseVM totalResponse = TotalResponseVM.fromClient(client, total, credit, debit);
             return ResponseHandler.ok(totalResponse, "Client total calculated successfully.");
         } else {
             return ResponseHandler.notFound("Client not found with id: " + clientId);
