@@ -10,7 +10,7 @@ spring:
 
   docker:
     compose:
-      file: src/main/docker/gypsogest.yml
+      file: src/main/docker/docker-compose.yml
       enabled: on
       lifecycle-management: start_and_stop
 
