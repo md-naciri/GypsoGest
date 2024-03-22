@@ -56,10 +56,25 @@ public class ClientServiceImp implements ClientService {
     @Override
     @Transactional
     public void deleteClient(Long id) {
-        clientRepository.findById(id)
-                .ifPresentOrElse(
-                        clientRepository::delete,
-                        () -> { throw new CustomException("Client not found with id: " + id); }
-                );
+
+//        clientRepository.findById(id)
+//                .ifPresentOrElse(
+//                        clientRepository::delete,
+//                        () -> { throw new CustomException("Client not found with id: " + id); }
+//                );
+        clientRepository.findById(id).ifPresentOrElse(
+                client -> {
+                    // Check if there are associated sales
+                    if (!client.getSales().isEmpty()) {
+                        throw new CustomException("Cannot delete client with ID " + id + " because it has associated sales.");
+                    }
+
+                    // Delete the client if no associated sales
+                    clientRepository.delete(client);
+                },
+                () -> {
+                    throw new CustomException("Client not found with id: " + id);
+                }
+        );
     }
 }

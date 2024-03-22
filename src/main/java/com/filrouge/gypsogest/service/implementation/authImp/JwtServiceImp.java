@@ -45,6 +45,9 @@ public class JwtServiceImp implements JwtService {
         return claimsResolver.apply(claims);
     }
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        String rolesString = userDetails.getAuthorities().toString();
+        rolesString = rolesString.substring(1, rolesString.length() - 1); // Remove the first and last characters, which are '[' and ']'
+        extraClaims.put("roles", rolesString);
         return Jwts.builder().setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
