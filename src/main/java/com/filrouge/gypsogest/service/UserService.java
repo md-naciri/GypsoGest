@@ -11,4 +11,6 @@ public interface UserService {
 //    AppUser saveUser(AppUser appUser);
     UserDetailsService userDetailsService();
     List<AppUser> getAllUsers();
+    void deleteUser(String username);
+
 }

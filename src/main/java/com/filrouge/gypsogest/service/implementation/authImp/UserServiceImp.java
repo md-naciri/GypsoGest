@@ -30,4 +30,11 @@ public class UserServiceImp implements UserService {
         return userRepo.findAll();
     }
 
+    @Override
+    public void deleteUser(String username) {
+        userRepo.findByUsername(username).ifPresentOrElse(
+                userRepo::delete,
+                () -> {throw new UsernameNotFoundException("Employee not exist");}
+        );
+    }
 }
